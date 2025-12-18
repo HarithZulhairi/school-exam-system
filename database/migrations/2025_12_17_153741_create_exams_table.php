@@ -12,9 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('exams', function (Blueprint $table) {
-            $table->id();
-            // Link to the teacher who created it
-            $table->foreignId('teacher_id')->constrained('users')->onDelete('cascade');
+            $table->id('exam_id');
             $table->string('title');
             $table->date('exam_date');
             $table->integer('duration_minutes');

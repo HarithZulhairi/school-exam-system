@@ -12,13 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('results', function (Blueprint $table) {
-            $table->id();
-            // Link to the student who took it
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            // Link to the exam they took
-            $table->foreignId('exam_id')->constrained('exams')->onDelete('cascade');
-            $table->integer('score'); // e.g., 80
-            $table->integer('total_questions'); // e.g., 100
+            $table->id('result_id');
+            $table->foreignId('student_id')->constrained('students', 'student_id')->onDelete('cascade');
+
+            $table->foreignId('exam_id')->constrained('exams', 'exam_id')->onDelete('cascade');
+            $table->integer('score'); 
+            $table->integer('total_questions'); 
             $table->timestamps();
         });
     }

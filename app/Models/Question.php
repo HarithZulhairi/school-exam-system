@@ -9,6 +9,10 @@ class Question extends Model
 {
     use HasFactory;
 
+    // 1. Define the custom primary key
+    protected $primaryKey = 'question_id';
+
+    // 2. Define fillable fields
     protected $fillable = [
         'exam_id',
         'question_text',
@@ -19,8 +23,9 @@ class Question extends Model
         'correct_answer',
     ];
 
+    // 3. Relationships
     public function exam()
     {
-        return $this->belongsTo(Exam::class);
+        return $this->belongsTo(Exam::class, 'exam_id');
     }
 }

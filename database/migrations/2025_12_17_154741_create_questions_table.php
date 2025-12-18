@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('questions', function (Blueprint $table) {
-            $table->id();
+            $table->id('question_id');
             // Link the question to a specific exam
-            $table->foreignId('exam_id')->constrained('exams')->onDelete('cascade');
+            $table->foreignId('exam_id')->constrained('exams', 'exam_id')->onDelete('cascade');
             $table->text('question_text');
             $table->string('option_a');
             $table->string('option_b');
