@@ -3,15 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Teacher\ProfileController;
-use App\Http\Controllers\Teacher\StudentExamController;
+use App\Http\Controllers\Teacher\ExamController;
 use App\Http\Controllers\Teacher\QuestionController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-*/
 
 // Public Landing Page
 Route::get('/', function () {
@@ -83,11 +78,10 @@ Route::middleware(['auth'])->group(function () {
         // })->name('exam.view');
 
 
-        Route::resource('exams', StudentExamController::class);
-
+        Route::resource('exams', ExamController::class);
         Route::resource('exams.questions', QuestionController::class)->shallow();
 
-        Route::get('/results', [StudentExamController::class, 'studentResults'])->name('results.index');
+        Route::get('/results', [ExamController::class, 'studentResults'])->name('results.index');
 
         // View Student List
         Route::get('/students', function () {

@@ -65,11 +65,11 @@
                     <div class="card-body d-flex justify-content-between align-items-center p-4">
                         <div>
                             <span class="badge bg-white text-primary mb-2">Editing</span>
-                            <h3 class="fw-bold mb-0">{{ $exam->title }}</h3>
+                            <h3 class="fw-bold mt-10">{{ $exam->title }}</h3>
                             <p class="mb-0 opacity-75 small"><i class="bi bi-calendar me-1"></i> {{ $exam->exam_date }} &bull; <i class="bi bi-clock me-1"></i> {{ $exam->duration_minutes }} Mins</p>
                         </div>
                         <div class="text-end">
-                             <a href="{{ route('teacher.exams.index') }}" class="btn btn-light text-primary fw-bold btn-sm">Done / Finish</a>
+                             <a href="{{ route('teacher.teacherDashboard') }}" class="btn btn-light text-primary fw-bold btn-sm">Done / Finish</a>
                         </div>
                     </div>
                 </div>
@@ -82,7 +82,7 @@
                                 <h5 class="fw-bold mb-0 text-primary"><i class="bi bi-plus-circle me-2"></i>Add New Question</h5>
                             </div>
                             <div class="card-body p-4">
-                                <form action="{{ route('teacher.exams.questions.store', $exam->id) }}" method="POST">
+                                <form action="{{ route('teacher.exams.questions.store', $exam->exam_id) }}" method="POST">
                                     @csrf
                                     
                                     <div class="mb-4">
@@ -165,7 +165,8 @@
                                                     <p class="mb-1 fw-bold small text-truncate" style="max-width: 200px;">{{ $q->question_text }}</p>
                                                     <small class="text-success"><i class="bi bi-check-circle-fill me-1"></i> Answer: {{ strtoupper($q->correct_answer) }}</small>
                                                 </div>
-                                                <form action="{{ route('teacher.exams.questions.destroy', $q->question_id) }}" method="POST">
+                                                
+                                                <form action="{{ route('teacher.questions.destroy', $q->question_id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-sm text-danger"><i class="bi bi-trash"></i></button>

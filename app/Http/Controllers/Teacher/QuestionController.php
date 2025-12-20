@@ -28,7 +28,7 @@ class QuestionController extends Controller
         ]);
 
         Question::create([
-            'exam_id' => $exam->id,
+            'exam_id' => $exam->exam_id,
             'question_text' => $request->question_text,
             'option_a' => $request->option_a,
             'option_b' => $request->option_b,
@@ -38,5 +38,13 @@ class QuestionController extends Controller
         ]);
 
         return back()->with('success', 'Question added successfully!');
+    }
+
+    public function destroy($id)
+    {
+        $question = Question::findOrFail($id);
+        $question->delete();
+
+        return back()->with('success', 'Question deleted successfully!');
     }
 }
