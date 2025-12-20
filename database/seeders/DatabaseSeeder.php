@@ -2,24 +2,70 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+use App\Models\Teacher;
+use App\Models\Student;
+use Faker\Factory as Faker;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
     /**
      * Seed the application's database.
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $faker = Faker::create('ms_MY'); 
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // ==========================================
+        // 1. CREATE 5 TEACHERS
+        // ==========================================
+        for ($i = 1; $i <= 5; $i++) {
+            
+            // A. Create the Login User
+            $user = User::create([
+                'name' => $faker->name,
+                'email' => 'teacher' . $i . '@school.edu', // teacher1@school.edu
+                'password' => Hash::make('password'),      // Default password
+                'role' => 'teacher',
+            ]);
+
+            // B. Create the Teacher Profile linked to the User
+            Teacher::create([
+                'user_id' => $user->id,
+                'teacher_ic' => $faker->unique()->numerify('##########'), // 12 digit IC
+                'teacher_form_class' => 'Form ' . $faker->randomElement(['1', '2', '3', '4', '5']) . ' ' . $faker->randomElement(['Bestari', 'Cerdik', 'Amanah']),
+                'teacher_address' => $faker->address,
+                'teacher_phone_number' => $faker->phoneNumber,
+                'teacher_subjects' => $faker->randomElement(['Bahasa Melayu', 'English', 'Mathematics', 'Science', 'History']),
+                'teacher_status' => 'Permanent',
+                'teacher_qualifications' => 'Bachelor of Education',
+            ]);
+        }
+
+        // ==========================================
+        // 2. CREATE 5 STUDENTS
+        // ==========================================
+        for ($i = 1; $i <= 5; $i++) {
+
+            // A. Create the Login User
+            $user = User::create([
+                'name' => $faker->name,
+                'email' => 'student' . $i . '@school.edu', // student1@school.edu
+                'password' => Hash::make('password'),      // Default password
+                'role' => 'student',
+            ]);
+
+            // B. Create the Student Profile linked to the User
+            Student::create([
+                'user_id' => $user->id,
+                'student_ic' => $faker->unique()->numerify('##########'),
+                'student_class' => $faker->randomElement(['Bestari', 'Cerdik', 'Amanah', 'Dedikasi']),
+                'student_address' => $faker->address,
+                'student_phone_number' => $faker->phoneNumber,
+                'student_form' => $faker->numberBetween(1, 5), 
+            ]);
+        }
     }
 }

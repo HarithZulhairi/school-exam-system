@@ -15,6 +15,7 @@ return new class extends Migration
             
             $table->string('student_ic')->unique(); 
             $table->string('student_class');
+            $table->string('student_phone_number');
             $table->string('student_address');  
             $table->integer('student_form');
             $table->timestamps();

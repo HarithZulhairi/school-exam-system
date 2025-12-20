@@ -101,9 +101,9 @@
                 <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#roles">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#roles">Log in</a></li>
                     <!-- Auth Links Check -->
-                    @if (Route::has('login'))
+                    <!-- @if (Route::has('login'))
                         @auth
                             <li class="nav-item ms-2">
                                 <a href="{{ url('/dashboard') }}" class="btn btn-primary rounded-pill px-4">Dashboard</a>
@@ -118,7 +118,7 @@
                                 </li>
                             @endif
                         @endauth
-                    @endif
+                    @endif -->
                 </ul>
             </div>
         </div>
@@ -207,7 +207,7 @@
             <div class="row justify-content-center g-4">
                 <!-- Teacher Card -->
                 <div class="col-md-5 col-lg-4">
-                    <a href="{{ route('login') }}" class="text-decoration-none text-dark">
+                    <a href="{{ route('teacher.login') }}" class="text-decoration-none text-dark">
                         <div class="card role-card h-100 p-4 shadow-sm text-center">
                             <div class="card-body">
                                 <div class="icon-box bg-primary bg-opacity-10 text-primary mx-auto rounded-circle" style="width: 80px; height: 80px;">
@@ -223,7 +223,7 @@
 
                 <!-- Student Card -->
                 <div class="col-md-5 col-lg-4">
-                    <a href="{{ route('login') }}" class="text-decoration-none text-dark">
+                    <a href="{{ route('student.login') }}" class="text-decoration-none text-dark">
                         <div class="card role-card h-100 p-4 shadow-sm text-center">
                             <div class="card-body">
                                 <div class="icon-box bg-success bg-opacity-10 text-success mx-auto rounded-circle" style="width: 80px; height: 80px;">

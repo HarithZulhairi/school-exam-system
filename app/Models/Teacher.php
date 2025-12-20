@@ -16,7 +16,8 @@ class Teacher extends Model
     protected $fillable = [
         'user_id',
         'teacher_ic',
-        'teacher_form_class', // e.g., Form teacher for 5 Bestari
+        'teacher_form_class', 
+        'teacher_phone_number',
         'teacher_address',
         'teacher_subjects',
         'teacher_status',

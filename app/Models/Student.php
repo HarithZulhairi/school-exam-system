@@ -17,6 +17,7 @@ class Student extends Model
         'user_id',
         'student_ic',
         'student_class',
+        'student_phone_number',
         'student_address',
         'student_form',
     ];

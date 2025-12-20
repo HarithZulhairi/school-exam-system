@@ -18,6 +18,7 @@ return new class extends Migration
 
             $table->string('teacher_ic')->unique(); 
             $table->string('teacher_form_class');
+            $table->string('teacher_phone_number');
             $table->string('teacher_address');  
             $table->string('teacher_subjects');
             $table->string('teacher_status');
