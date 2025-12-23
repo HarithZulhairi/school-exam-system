@@ -15,7 +15,7 @@
     @endif
 
     <!-- Header Actions -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
         <div>
             <h4 class="fw-bold text-dark mb-1">My Examinations</h4>
             <p class="text-muted small mb-0">Manage, edit, and track your created assessments.</p>
@@ -23,6 +23,46 @@
         <a href="{{ route('teacher.exams.create') }}" class="btn btn-primary px-4 fw-bold shadow-sm">
             <i class="bi bi-plus-lg me-2"></i> Create New Exam
         </a>
+    </div>
+
+    <!-- Search & Filter Card -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-3">
+            <form action="{{ route('teacher.exams.index') }}" method="GET" class="row g-2 align-items-center">
+                
+                <!-- Search Input -->
+                <div class="col-md-6 col-lg-5">
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search"></i></span>
+                        <input type="text" name="search" class="form-control border-start-0 bg-light ps-0" 
+                               placeholder="Search exam title..." value="{{ request('search') }}">
+                    </div>
+                </div>
+
+                <!-- Status Filter -->
+                <div class="col-md-4 col-lg-3">
+                    <select name="status" class="form-select bg-light text-muted" onchange="this.form.submit()">
+                        <option value="all">Filter by Status: All</option>
+                        <option value="1" {{ request('status') == '1' ? 'selected' : '' }}>Active (Published)</option>
+                        <option value="0" {{ request('status') == '0' ? 'selected' : '' }}>Draft (Hidden)</option>
+                    </select>
+                </div>
+
+                <!-- Filter Buttons -->
+                <div class="col-md-2 col-lg-2">
+                    <button type="submit" class="btn btn-dark w-100">Filter</button>
+                </div>
+                
+                <!-- Reset Link -->
+                @if(request()->anyFilled(['search', 'status']))
+                    <div class="col-md-auto">
+                        <a href="{{ route('teacher.exams.index') }}" class="text-decoration-none text-muted small fw-bold">
+                            <i class="bi bi-x-circle"></i> Clear
+                        </a>
+                    </div>
+                @endif
+            </form>
+        </div>
     </div>
 
     <!-- Exam List Card -->
@@ -39,7 +79,7 @@
                                 <th scope="col" class="py-3" style="width: 15%;">Date & Duration</th>
                                 <th scope="col" class="py-3 text-center" style="width: 15%;">Questions</th>
                                 <th scope="col" class="py-3 text-center" style="width: 10%;">Status</th>
-                                <th scope="col" class="pe-4 py-3 text-end" style="width: 20%;">Actions</th>
+                                <th scope="col" class="pe-4 py-3 text-center" style="width: 20%;">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -52,6 +92,7 @@
                                                 <i class="bi bi-file-earmark-text fs-5"></i>
                                             </div>
                                             <div>
+                                                <!-- Highlight search term logic could go here, keeping simple for now -->
                                                 <h6 class="mb-0 fw-bold text-dark">{{ Str::limit($exam->title, 50) }}</h6>
                                                 <small class="text-muted">Created {{ $exam->created_at->diffForHumans() }}</small>
                                             </div>
@@ -81,7 +122,7 @@
                                             <a href="{{ route('teacher.exams.questions.create', $exam->exam_id) }}" 
                                                class="btn btn-sm btn-outline-primary" 
                                                data-bs-toggle="tooltip" title="Manage Questions">
-                                                <i class="bi bi-list-check"></i> Questions
+                                                <i class="bi bi-list-check"></i>
                                             </a>
                                             
                                             <!-- Edit Exam Details Button -->
@@ -136,7 +177,8 @@
                 <div class="d-flex justify-content-between align-items-center p-3 bg-light border-top">
                     <span class="small text-muted">Showing {{ $exams->firstItem() }} to {{ $exams->lastItem() }} of {{ $exams->total() }} results</span>
                     <div>
-                        {{ $exams->links('pagination::bootstrap-5') }}
+                        <!-- IMPORTANT: appends(request()->query()) keeps search params when switching pages -->
+                        {{ $exams->appends(request()->query())->links('pagination::bootstrap-5') }}
                     </div>
                 </div>
 
@@ -145,13 +187,13 @@
                 <div class="text-center py-5">
                     <div class="mb-3">
                         <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
-                            <i class="bi bi-clipboard-x text-muted display-6"></i>
+                            <i class="bi bi-search text-muted display-6"></i>
                         </div>
                     </div>
                     <h5 class="fw-bold text-dark">No Exams Found</h5>
-                    <p class="text-muted mb-4">You haven't created any exams yet. Start by creating one now.</p>
-                    <a href="{{ route('teacher.exams.create') }}" class="btn btn-primary px-4 fw-bold">
-                        <i class="bi bi-plus-lg me-2"></i> Create First Exam
+                    <p class="text-muted mb-4">We couldn't find any exams matching your search criteria.</p>
+                    <a href="{{ route('teacher.exams.index') }}" class="btn btn-outline-secondary px-4 fw-bold">
+                        Clear Filters
                     </a>
                 </div>
             @endif
@@ -170,6 +212,10 @@
     .badge {
         font-weight: 500;
         letter-spacing: 0.5px;
+    }
+    .form-control:focus, .form-select:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
     }
 </style>
 @endsection

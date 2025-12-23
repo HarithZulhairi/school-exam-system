@@ -37,12 +37,19 @@ class ExamController extends Controller
                          ->with('success', 'Exam created! Now add your questions below.');
     }
     
-    // Logic to list exams
-    public function index()
+    public function index(Request $request)
     {
-        $exams = Exam::where('teacher_id', Auth::user()->teacher->teacher_id)
-                     ->orderBy('created_at', 'desc')
-                     ->paginate(10); 
+        $query = Exam::where('teacher_id', Auth::user()->teacher->teacher_id);
+
+        if ($request->filled('search')) {
+            $query->where('title', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('status') && $request->status !== 'all') {
+            $query->where('is_active', $request->status);
+        }
+
+        $exams = $query->orderBy('created_at', 'desc')->paginate(10);
 
         return view('teacher.teacherManageExam', compact('exams')); 
     }
