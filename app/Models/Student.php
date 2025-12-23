@@ -15,6 +15,9 @@ class Student extends Model
     // 2. Define fillable fields
     protected $fillable = [
         'user_id',
+        'student_gender',
+        'student_age',
+        'student_DOB',
         'student_ic',
         'student_class',
         'student_phone_number',

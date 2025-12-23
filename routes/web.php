@@ -6,6 +6,7 @@ use App\Http\Controllers\Teacher\ProfileController;
 use App\Http\Controllers\Teacher\ExamController;
 use App\Http\Controllers\Teacher\QuestionController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Teacher\StudentController as TeacherStudentController;
 
 
 // Public Landing Page
@@ -84,9 +85,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/results', [ExamController::class, 'studentResults'])->name('results.index');
 
         // View Student List
-        Route::get('/students', function () {
-            return view('teacher.teacherViewStudentList');
-        })->name('students.list');
+        // Route::get('/students', function () {
+        //     return view('teacher.teacherViewStudentList');
+        // })->name('students.list');
+
+        Route::get('/students', [TeacherStudentController::class, 'index'])->name('students.list');
+        Route::delete('/students/{id}', [TeacherStudentController::class, 'destroy'])->name('students.destroy');
     });
 
     // ===========================

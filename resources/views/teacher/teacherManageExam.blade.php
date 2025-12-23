@@ -50,7 +50,7 @@
 
                 <!-- Filter Buttons -->
                 <div class="col-md-2 col-lg-2">
-                    <button type="submit" class="btn btn-dark w-100">Filter</button>
+                    <button type="submit" class="btn btn-dark w-100">Search</button>
                 </div>
                 
                 <!-- Reset Link -->
@@ -116,7 +116,7 @@
                                             <span class="badge bg-secondary bg-opacity-10 text-secondary px-2 py-1 rounded-pill small">Draft</span>
                                         @endif
                                     </td>
-                                    <td class="pe-4 text-end">
+                                    <td class="pe-4 text-center">
                                         <div class="btn-group">
                                             <!-- Add/Edit Questions Button -->
                                             <a href="{{ route('teacher.exams.questions.create', $exam->exam_id) }}" 

@@ -13,7 +13,10 @@ return new class extends Migration
             
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             
-            $table->string('student_ic')->unique(); 
+            $table->string('student_ic')->unique();
+            $table->string('student_gender');
+            $table->integer('student_age');
+            $table->date('student_DOB'); 
             $table->string('student_class');
             $table->string('student_phone_number');
             $table->string('student_address');  

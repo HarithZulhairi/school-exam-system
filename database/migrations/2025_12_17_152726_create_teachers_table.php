@@ -16,7 +16,10 @@ return new class extends Migration
             
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
 
-            $table->string('teacher_ic')->unique(); 
+            $table->string('teacher_ic')->unique();
+            $table->string('teacher_gender');
+            $table->integer('teacher_age');
+            $table->date('teacher_DOB');  
             $table->string('teacher_form_class');
             $table->string('teacher_phone_number');
             $table->string('teacher_address');  

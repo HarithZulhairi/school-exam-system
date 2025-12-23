@@ -46,6 +46,9 @@ class ProfileController extends Controller
             'subjects'       => 'required|array', // Array from multi-select
             'qualifications' => 'required|string',
             'status'         => 'required|string',
+            'age'            => 'required|integer|min:18',
+            'DOB'            => 'required|date',
+            'gender'         => 'required|string',
 
             // Optional Password Validation
             'password' => 'nullable|min:8|confirmed', // expects password_confirmation field
@@ -59,6 +62,7 @@ class ProfileController extends Controller
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
         }
+
         $user->save();
 
         // 3. Update Teacher Table
@@ -67,6 +71,9 @@ class ProfileController extends Controller
         $teacher->teacher_address = $request->address;
         $teacher->teacher_qualifications = $request->qualifications;
         $teacher->teacher_status = $request->status;
+        $teacher->teacher_age = $request->age;
+        $teacher->teacher_DOB = $request->DOB;
+        $teacher->teacher_gender = $request->gender;
         
         // Convert Array of Subjects to Comma Separated String
         $teacher->teacher_subjects = implode(', ', $request->subjects);

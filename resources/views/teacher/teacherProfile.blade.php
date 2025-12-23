@@ -89,6 +89,21 @@
                                 <label class="form-label fw-bold small">Email Address</label>
                                 <input type="email" name="email" class="form-control" value="{{ old('email', $user->email) }}" required>
                             </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold small">Age</label>
+                                <input type="number" name="age" class="form-control" value="{{ old('age', $teacher->teacher_age) }}" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold small">Date of Birth</label>
+                                <input type="date" name="DOB" class="form-control" value="{{ old('DOB', $teacher->teacher_DOB) }}" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold small">Gender</label>
+                                <select name="gender" class="form-select">
+                                    <option value="Male" {{ (old('gender', $teacher->teacher_gender) == 'Male') ? 'selected' : '' }}>Male</option>
+                                    <option value="Female" {{ (old('gender', $teacher->teacher_gender) == 'Female') ? 'selected' : '' }}>Female</option>
+                                </select>
+                            </div>
                         </div>
 
                         <!-- Section: Professional Info -->
