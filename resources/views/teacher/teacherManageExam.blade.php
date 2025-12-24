@@ -78,6 +78,7 @@
                                 <th scope="col" class="py-3" style="width: 35%;">Exam Details</th>
                                 <th scope="col" class="py-3" style="width: 15%;">Date & Duration</th>
                                 <th scope="col" class="py-3 text-center" style="width: 15%;">Questions</th>
+                                <th scope="col" class="py-3 text-center" style="width: 10%;">Exam Form</th>
                                 <th scope="col" class="py-3 text-center" style="width: 10%;">Status</th>
                                 <th scope="col" class="pe-4 py-3 text-center" style="width: 20%;">Actions</th>
                             </tr>
@@ -107,6 +108,11 @@
                                     <td class="text-center">
                                         <span class="badge bg-light text-dark border px-3 py-2 rounded-pill">
                                             {{ $exam->questions->count() }} Qs
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge bg-light text-dark border px-3 py-2 rounded-pill">
+                                            Form {{ $exam->exam_form }}
                                         </span>
                                     </td>
                                     <td class="text-center">

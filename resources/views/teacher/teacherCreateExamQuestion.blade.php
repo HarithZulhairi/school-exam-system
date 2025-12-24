@@ -47,6 +47,15 @@
                                         <span class="input-group-text bg-light text-muted">min</span>
                                     </div>
                                 </div>
+                                <div class="col-md-12">
+                                    <label class="form-label fw-bold small text-muted">Form for the Exam</label>
+                                    <select name="exam_form" class="form-control" required>
+                                        <option value="" disabled selected>Select Form</option>
+                                        @for($i = 1; $i <= 5; $i++)
+                                            <option value="{{ $i }}">Form {{ $i }}</option>
+                                        @endfor
+                                    </select>   
+                                </div>
                                 <div class="col-12 text-end mt-4">
                                     <button type="submit" class="btn btn-primary px-5 fw-bold">
                                         Next: Add Questions <i class="bi bi-arrow-right ms-2"></i>

@@ -90,6 +90,7 @@ Route::middleware(['auth'])->group(function () {
         // })->name('students.list');
 
         Route::get('/students', [TeacherStudentController::class, 'index'])->name('students.list');
+        Route::get('/students/{id}', [TeacherStudentController::class, 'show'])->name('students.show');
         Route::delete('/students/{id}', [TeacherStudentController::class, 'destroy'])->name('students.destroy');
     });
 

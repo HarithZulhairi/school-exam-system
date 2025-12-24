@@ -130,11 +130,6 @@
                     <i class="bi bi-people"></i> Student List
                 </a>
             </li>
-             <li class="nav-item">
-                <a href="{{ route('teacher.results.index') }}" class="nav-link {{ request()->routeIs('teacher.results.index') ? 'active' : '' }}">
-                    <i class="bi bi-trophy"></i> Student Results
-                </a>
-            </li>
         </ul>
 
         <!-- Logout Button (Bottom) -->

@@ -21,6 +21,7 @@ class ExamController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'exam_date' => 'required|date',
+            'exam_form' => 'required|integer|between:1,5',
             'duration_minutes' => 'required|integer|min:1',
         ]);
 
@@ -29,6 +30,7 @@ class ExamController extends Controller
             'teacher_id' => Auth::user()->teacher->teacher_id,
             'title' => $request->title,
             'exam_date' => $request->exam_date,
+            'exam_form' => $request->exam_form,
             'duration_minutes' => $request->duration_minutes,
             'is_active' => true,
         ]);
@@ -75,6 +77,7 @@ class ExamController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'exam_date' => 'required|date',
+            'exam_form' => 'required|integer|between:1,5',
             'duration_minutes' => 'required|integer|min:1',
             'is_active' => 'required|boolean', 
         ]);
@@ -84,6 +87,7 @@ class ExamController extends Controller
         $exam->update([
             'title' => $request->title,
             'exam_date' => $request->exam_date,
+            'exam_form' => $request->exam_form,
             'duration_minutes' => $request->duration_minutes,
             'is_active' => $request->is_active,
         ]);

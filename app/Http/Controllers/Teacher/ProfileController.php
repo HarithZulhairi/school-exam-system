@@ -16,7 +16,6 @@ class ProfileController extends Controller
     public function edit()
     {
         $user = Auth::user();
-        // Load the teacher profile with the user
         $teacher = $user->teacher;
 
         // Convert comma-separated subjects string back to array for the view
@@ -43,37 +42,50 @@ class ProfileController extends Controller
             'nric'           => ['required', Rule::unique('teachers', 'teacher_ic')->ignore($teacher->teacher_id, 'teacher_id')],
             'phone_number'   => 'required|string|max:20',
             'address'        => 'required|string',
-            'subjects'       => 'required|array', // Array from multi-select
+            'subjects'       => 'required|array', 
             'qualifications' => 'required|string',
             'status'         => 'required|string',
             'age'            => 'required|integer|min:18',
             'DOB'            => 'required|date',
             'gender'         => 'required|string',
 
+            // --- NEW: Class Form Restriction ---
+            // "form_class" must be unique in "teachers" table (column: teacher_form_class)
+            // We ignore the current teacher's ID so they can keep their own class without error.
+            'form_class'     => [
+                'required', 
+                'string', 
+                Rule::unique('teachers', 'teacher_form_class')->ignore($teacher->teacher_id, 'teacher_id')
+            ],
+
             // Optional Password Validation
-            'password' => 'nullable|min:8|confirmed', // expects password_confirmation field
+            'password' => 'nullable|min:8|confirmed',
+        ], [
+            // Custom Error Message
+            'form_class.unique' => 'This Class Form is already assigned to another teacher.',
         ]);
 
         // 2. Update User Table
         $user->name = $request->name;
         $user->email = $request->email;
         
-        // Only update password if provided
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
         }
-
         $user->save();
 
         // 3. Update Teacher Table
         $teacher->teacher_ic = $request->nric;
-        // $teacher->phone_number = $request->phone_number; // Add this if you added phone to migration, otherwise remove
         $teacher->teacher_address = $request->address;
+        $teacher->teacher_phone_number = $request->phone_number; // Ensure this column matches your DB
         $teacher->teacher_qualifications = $request->qualifications;
         $teacher->teacher_status = $request->status;
         $teacher->teacher_age = $request->age;
         $teacher->teacher_DOB = $request->DOB;
         $teacher->teacher_gender = $request->gender;
+        
+        // Save the Class Form
+        $teacher->teacher_form_class = $request->form_class;
         
         // Convert Array of Subjects to Comma Separated String
         $teacher->teacher_subjects = implode(', ', $request->subjects);

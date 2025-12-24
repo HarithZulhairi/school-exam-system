@@ -45,6 +45,16 @@
                                 </div>
                             </div>
 
+                            <div class="col-md-12">
+                                <label class="form-label fw-bold small text-muted">Form for the Exam</label>
+                                <select name="exam_form" class="form-control" required>
+                                    <option value="{{ old('exam_form', $exam->exam_form) }}" disabled selected>Form {{ old('exam_form', $exam->exam_form) }}</option>
+                                    @for($i = 1; $i <= 5; $i++)
+                                        <option value="{{ $i }}">Form {{ $i }}</option>
+                                    @endfor
+                                </select>   
+                            </div>
+
                             <!-- Status Toggle -->
                             <div class="col-12 mt-3">
                                 <label class="form-label fw-bold small text-muted">Exam Status</label>

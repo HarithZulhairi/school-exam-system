@@ -123,7 +123,6 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">Phone Number</label>
-                                <!-- Note: Ensure phone_number exists in DB, or remove this input -->
                                 <input type="text" name="phone_number" class="form-control" value="{{ old('phone_number', $teacher->teacher_phone_number ?? '') }}" placeholder="+60...">
                             </div>
                             <div class="col-12">
@@ -146,6 +145,16 @@
                                     @endforeach
                                 </select>
                                 <div class="form-text">Selected: {{ implode(', ', $currentSubjects) }}</div>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-bold small">Form teaching</label>
+                                <select type="number" name="form_class" class="form-control" value="{{ old('form_class', $teacher->teacher_form_class) }}" required>
+                                    <option value="">{{ old('form_class', $teacher->teacher_form_class) }}</option>
+                                    @php $allClasses = ['1 Bestari', '1 Cerdik', '1 Amanah', '1 Dedikasi', '2 Bestari', '2 Cerdik', '2 Amanah', '2 Dedikasi', '3 Bestari', '3 Cerdik', '3 Amanah', '3 Dedikasi', '4 Bestari', '4 Cerdik', '4 Amanah', '4 Dedikasi', '5 Bestari', '5 Cerdik', '5 Amanah', '5 Dedikasi']; @endphp
+                                    @foreach($allClasses as $cls)
+                                        <option value="{{ $cls }}" {{ old('form_class', $teacher->teacher_form_class) == $cls ? 'selected' : '' }}> {{ $cls }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="col-12">
                                 <label class="form-label fw-bold small">Academic Qualifications</label>

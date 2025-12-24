@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('exam_id');
             $table->foreignId('teacher_id')->constrained('teachers', 'teacher_id')->onDelete('cascade');
             $table->string('title');
+            $table->integer('exam_form');
             $table->date('exam_date');
             $table->integer('duration_minutes');
             $table->boolean('is_active')->default(true); // Is the exam currently open?

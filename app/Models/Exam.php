@@ -15,6 +15,7 @@ class Exam extends Model
         'teacher_id',
         'title',
         'exam_date',
+        'exam_form',
         'duration_minutes',
         'is_active',
     ];
