@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('teacher_gender');
             $table->integer('teacher_age');
             $table->date('teacher_DOB');  
-            $table->string('teacher_form_class');
+            $table->string('teacher_form_class')->nullable();
             $table->string('teacher_phone_number');
             $table->string('teacher_address');  
             $table->string('teacher_subjects');

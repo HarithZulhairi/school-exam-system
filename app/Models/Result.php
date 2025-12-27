@@ -18,6 +18,7 @@ class Result extends Model
         'exam_id',
         'score',
         'total_questions',
+        'answers_json',
     ];
 
     // 3. Relationships

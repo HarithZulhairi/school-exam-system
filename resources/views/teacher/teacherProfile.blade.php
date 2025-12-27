@@ -176,7 +176,6 @@
                         </div>
 
                         <div class="d-flex justify-content-end gap-2 mt-4">
-                            <button type="reset" class="btn btn-light border">Reset</button>
                             <button type="submit" class="btn btn-primary px-4 fw-bold">Save Changes</button>
                         </div>
 

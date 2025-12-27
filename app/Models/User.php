@@ -23,4 +23,11 @@ class User extends Authenticatable
     {
         return $this->hasOne(Teacher::class);
     }
+
+    // A User might be an Admin
+    public function admin()
+    {
+        return $this->hasOne(Admin::class);
+    }
+    
 }

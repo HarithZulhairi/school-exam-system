@@ -85,7 +85,8 @@
     <!-- Sidebar -->
     <nav class="sidebar d-flex flex-column">
         <div class="sidebar-header">
-            <h4 class="fw-bold mb-0"><i class="bi bi-mortarboard-fill me-2"></i>SchoolExams</h4>
+            <img src="{{ asset('assets/SMKSP.png') }}" alt="SMKSP Logo" width="80" height="80">
+            <h4 class="fw-bold mb-0">ExSySP</h4>
             <small class="opacity-75">Teacher Panel</small>
         </div>
 

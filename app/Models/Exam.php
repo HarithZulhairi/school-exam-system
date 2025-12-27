@@ -15,6 +15,12 @@ class Exam extends Model
         'teacher_id',
         'title',
         'exam_date',
+        'exam_start_time',
+        'exam_end_time',
+        'exam_description',
+        'exam_subject',
+        'exam_type',
+        'exam_paper',
         'exam_form',
         'duration_minutes',
         'is_active',
@@ -29,6 +35,6 @@ class Exam extends Model
     // An exam belongs to one teacher
     public function teacher()
     {
-        return $this->belongsTo(User::class, 'teacher_id');
+        return $this->belongsTo(Teacher::class, 'teacher_id');
     }
 }

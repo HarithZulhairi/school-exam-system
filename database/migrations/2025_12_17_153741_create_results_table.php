@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('exam_id')->constrained('exams', 'exam_id')->onDelete('cascade');
             $table->integer('score'); 
             $table->integer('total_questions'); 
+            $table->json('answers_json')->nullable(); // New field to store answers as JSON
             $table->timestamps();
         });
     }

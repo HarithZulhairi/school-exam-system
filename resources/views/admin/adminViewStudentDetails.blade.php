@@ -1,4 +1,4 @@
-@extends('layouts.teacherLayout')
+@extends('layouts.adminLayout')
 
 @section('title', 'Student Details')
 @section('page-title', 'Student Profile')
@@ -8,7 +8,7 @@
 
     <!-- Back Button -->
     <div class="mb-4">
-        <a href="{{ route('teacher.students.list') }}" class="btn btn-light border text-muted">
+        <a href="{{ route('admin.students.index') }}" class="btn btn-light border text-muted">
             <i class="bi bi-arrow-left me-2"></i> Back to Student List
         </a>
     </div>
@@ -131,7 +131,7 @@
                                             </span>
                                         </td>
                                         <td class="pe-4 text-end">
-                                            <a href="{{ route('teacher.exams.result.details', $result->result_id) }}" class="btn btn-sm btn-outline-primary fw-bold">
+                                            <a href="{{ route('admin.exams.result.details', $result->result_id) }}" class="btn btn-sm btn-outline-primary fw-bold">
                                                 <i class="bi bi-eye"></i>
                                             </a>
                                         </td>

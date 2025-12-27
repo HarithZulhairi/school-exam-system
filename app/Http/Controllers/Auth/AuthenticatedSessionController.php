@@ -37,9 +37,12 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('teacher.teacherDashboard');
         } 
         
-
         elseif ($user->role === 'student') {
             return redirect()->route('student.studentDashboard');
+        }
+
+        elseif ($user->role === 'admin') {
+            return redirect()->route('admin.adminDashboard');
         }
 
         return redirect('/');

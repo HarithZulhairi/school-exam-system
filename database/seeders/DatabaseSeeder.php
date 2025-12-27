@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Teacher;
 use App\Models\Student;
+use App\Models\Admin;
 use Faker\Factory as Faker;
 use Carbon\Carbon;
 
@@ -18,6 +19,38 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create('ms_MY'); // Malaysian Data
+
+        // ==========================================
+        // 0. CREATE 2 ADMINS
+        // ==========================================
+
+        // Admin 1
+        $adminUser1 = User::create([
+            'name' => 'Encik Ahmad Bin Faisal',
+            'email' => 'admin1@smksp.edu.my',
+            'password' => Hash::make('123456'),
+            'role' => 'admin',
+        ]);
+        Admin::create([
+            'user_id' => $adminUser1->id,
+            'admin_age' => 45,
+            'admin_phone_number' => '012-3456789',
+            'admin_position' => 'Senior Administrator'
+        ]);
+
+        // Admin 2
+        $adminUser2 = User::create([
+            'name' => 'Puan Salmah',
+            'email' => 'admin2@smksp.edu.my',
+            'password' => Hash::make('123456'),
+            'role' => 'admin',
+        ]);
+        Admin::create([
+            'user_id' => $adminUser2->id,
+            'admin_age' => 38,
+            'admin_phone_number' => '019-8765432',
+            'admin_position' => 'IT Support Officer'
+        ]);
 
         // ==========================================
         // 1. CREATE 5 TEACHERS

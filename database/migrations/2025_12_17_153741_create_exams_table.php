@@ -14,11 +14,24 @@ return new class extends Migration
         Schema::create('exams', function (Blueprint $table) {
             $table->id('exam_id');
             $table->foreignId('teacher_id')->constrained('teachers', 'teacher_id')->onDelete('cascade');
+            
+            // Basic Info
             $table->string('title');
-            $table->integer('exam_form');
+            $table->text('exam_description')->nullable();
+            
+            // Classification
+            $table->string('exam_subject');
+            $table->string('exam_type');
+            $table->string('exam_paper'); // Kertas 1, 2, etc.
+            $table->integer('exam_form'); // Form 1-5
+            
+            // Timing
             $table->date('exam_date');
-            $table->integer('duration_minutes');
-            $table->boolean('is_active')->default(true); // Is the exam currently open?
+            $table->time('exam_start_time');
+            $table->time('exam_end_time');
+            $table->integer('duration_minutes'); // Calculated/Stored
+            
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

@@ -54,6 +54,42 @@ class DashboardController extends Controller
 
     public function studentHome()
     {
-        return view('student.studentDashboard');
+        $student = Auth::user()->student; // Get the Student profile
+
+        // 1. Key Stats
+        $availableExams = Exam::where('is_active', true)->count();
+        $examsTaken = $student->results()->count();
+        
+        // Calculate Average Score (Percentage)
+        $results = $student->results;
+        $averageScore = 0;
+        if ($results->count() > 0) {
+            $totalPercentage = 0;
+            foreach ($results as $res) {
+                if ($res->total_questions > 0) {
+                    $totalPercentage += ($res->score / $res->total_questions) * 100;
+                }
+            }
+            $averageScore = round($totalPercentage / $results->count(), 1);
+        }
+
+        // 2. Graph Data: Exams taken by THIS student per month
+        $myActivityData = $student->results()
+                    ->select(DB::raw("COUNT(*) as count"), DB::raw("MONTH(created_at) as month_name"))
+                    ->whereYear('created_at', date('Y'))
+                    ->groupBy(DB::raw("month_name"))
+                    ->orderBy('month_name')
+                    ->pluck('count', 'month_name');
+        
+        // 3. Format Data
+        $labels = [];
+        $data = [];
+        for ($m = 1; $m <= 12; $m++) {
+            $month = date('F', mktime(0, 0, 0, $m, 1));
+            $labels[] = $month;
+            $data[] = $myActivityData->has($m) ? $myActivityData->get($m) : 0;
+        }
+
+        return view('student.studentDashboard', compact('availableExams', 'examsTaken', 'averageScore', 'labels', 'data'));
     }
 }
