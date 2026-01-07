@@ -29,29 +29,25 @@ class ExamController extends Controller
         return view('student.studentTakeExam', compact('exams', 'student'));
     }
 
-    /**
-     * SHOW METHOD - FIXED
-     * Now explicitly passes $endTime to the view
-     */
     public function show($id)
     {
         $exam = Exam::with('questions')->findOrFail($id);
         $student = Auth::user()->student;
         
-        // Security: Check Form Level
+        
         if($exam->exam_form != $student->student_form) {
             abort(403, 'This exam is not available for your form level.');
         }
 
-        // Timezone Setup
+        
         $timezone = 'Asia/Kuala_Lumpur';
         $now = Carbon::now($timezone);
         $startTime = Carbon::parse($exam->exam_date . ' ' . $exam->exam_start_time, $timezone);
         
-        // Calculate End Time (as a Carbon Object)
+        
         $endTime = Carbon::parse($exam->exam_date . ' ' . $exam->exam_end_time, $timezone);
 
-        // Time Checks
+        
         if ($now->lt($startTime)) {
             return redirect()->route('student.exams.index')->with('error', 'This exam has not started yet.');
         }
@@ -60,7 +56,7 @@ class ExamController extends Controller
              return redirect()->route('student.exams.index')->with('error', 'This exam has already ended.');
         }
 
-        // Check if already taken
+        
         $existingResult = Result::where('student_id', $student->student_id)
                                 ->where('exam_id', $exam->exam_id)
                                 ->first();
@@ -69,7 +65,7 @@ class ExamController extends Controller
             return redirect()->route('student.exams.index')->with('info', 'You have already taken this exam.');
         }
 
-        // PASS $endTime TO THE VIEW HERE
+        
         return view('student.studentAttemptExam', compact('exam', 'endTime')); 
     }
 
@@ -112,7 +108,7 @@ class ExamController extends Controller
         return view('student.studentExamResult', compact('exam', 'score', 'totalQuestions', 'detailedResults'));
     }
 
-    // ... history and historyDetails methods remain as previously defined ...
+    
     public function history(Request $request)
     {
         $student = Auth::user()->student;

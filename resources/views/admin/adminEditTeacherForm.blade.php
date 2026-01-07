@@ -112,8 +112,22 @@
                                 <input type="text" name="teacher_subjects" class="form-control" value="{{ old('teacher_subjects', $teacher->teacher_subjects) }}" required>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label fw-bold small text-muted">Class Teacher Assigned</label>
-                                <input type="text" name="teacher_form_class" class="form-control" value="{{ old('teacher_form_class', $teacher->teacher_form_class) }}" placeholder="e.g. 5 Bestari">
+                                <label class="form-label fw-bold small text-muted">Class Teacher Assigned (Optional)</label>
+                                <select name="teacher_form_class" class="form-select">
+                                    <option value="" selected>{{ old('teacher_form_class', $teacher->teacher_form_class) }}</option>
+                                    @php
+                                        $forms = range(1, 5);
+                                        $classes = ['Bestari', 'Cerdik', 'Amanah'];
+                                    @endphp
+                                    @foreach($forms as $form)
+                                        @foreach($classes as $class)
+                                            <option value="{{ $form }} {{ $class }}" {{ old('teacher_form_class') == "$form $class" ? 'selected' : '' }}>
+                                                {{ $form }} {{ $class }}
+                                            </option>
+                                        @endforeach
+                                    @endforeach
+                                </select>
+                                <small class="text-muted">Select 'No Class' if the teacher is not assigned to a specific class.</small>
                             </div>
                         </div>
 

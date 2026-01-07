@@ -16,13 +16,13 @@ class StudentController extends Controller
 
         $query = Student::with('user');
 
-        // 1. View Type Logic
+        
         $viewType = $request->input('view_type', 'all');
 
         if ($viewType === 'my_class') {
             $teacherClass = $teacher->teacher_form_class;
             if ($teacherClass) {
-                // Normalize: Remove "Form " to match student data (e.g. "5 Bestari")
+                
                 $targetClass = trim(str_ireplace('Form ', '', $teacherClass));
                 $query->where('student_class', $targetClass);
             } else {
@@ -30,7 +30,7 @@ class StudentController extends Controller
             }
         }
 
-        // 2. Search Logic
+        
         if ($request->filled('search')) {
             $searchTerm = $request->search;
             $query->whereHas('user', function($q) use ($searchTerm) {
@@ -38,7 +38,7 @@ class StudentController extends Controller
             });
         }
 
-        // 3. Filters
+        
         if ($viewType !== 'my_class') {
             if ($request->filled('form') && $request->form !== 'all') {
                 $query->where('student_form', $request->form);
@@ -59,7 +59,7 @@ class StudentController extends Controller
      */
     public function show($id)
     {
-        // Fetch student with User info and Results (including the Exam details for those results)
+        
         $student = Student::with(['user', 'results.exam'])->findOrFail($id);
 
         return view('teacher.teacherViewStudentDetails', compact('student'));

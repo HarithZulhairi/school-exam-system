@@ -20,12 +20,12 @@ class AdminController extends Controller
      */
     public function dashboard()
     {
-        // 1. Fetch System Statistics
+        
         $totalStudents = Student::count();
         $totalTeachers = Teacher::count();
         $totalExams = Exam::count();
         
-        // 2. Fetch Recent Users (Last 5 registered)
+        
         $recentUsers = User::latest()->take(5)->get();
 
         return view('admin.adminDashboard', compact('totalStudents', 'totalTeachers', 'totalExams', 'recentUsers'));
@@ -37,7 +37,7 @@ class AdminController extends Controller
     public function profile()
     {
         $user = Auth::user();
-        $admin = $user->admin; // Access the related Admin model
+        $admin = $user->admin; 
         
         return view('admin.adminProfile', compact('user', 'admin'));
     }
@@ -50,22 +50,22 @@ class AdminController extends Controller
         $user = Auth::user();
         $admin = $user->admin;
 
-        // 1. Validate Input
+        
         $request->validate([
-            // User Table fields
+            
             'name' => 'required|string|max:255',
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             
-            // Admin Table fields
+            
             'admin_phone_number' => 'nullable|string|max:20',
             'admin_position' => 'required|string|max:255',
             'admin_age' => 'required|integer|min:18',
             
-            // Password (Optional)
+            
             'password' => 'nullable|string|min:6|confirmed',
         ]);
 
-        // 2. Update User Table
+        
         $user->name = $request->name;
         $user->email = $request->email;
         
@@ -75,8 +75,7 @@ class AdminController extends Controller
         
         $user->save();
 
-        // 3. Update Admin Table
-        // We sync admin_name with user->name for consistency, unless intended otherwise
+    
         $admin->update([
             'admin_name' => $request->name, 
             'admin_phone_number' => $request->admin_phone_number,

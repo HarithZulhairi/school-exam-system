@@ -29,13 +29,13 @@ class ProfileController extends Controller
         $user = Auth::user();
         $student = $user->student;
 
-        // 1. Validate Data
+        
         $request->validate([
-            // User Table Validation
+            
             'name'  => 'required|string|max:255',
             'email' => ['required', 'email', Rule::unique('users')->ignore($user->id)],
             
-            // Student Table Validation
+            
             'nric'           => ['required', Rule::unique('students', 'student_ic')->ignore($student->student_id, 'student_id')],
             'phone_number'   => 'required|string|max:20',
             'address'        => 'required|string',
@@ -43,15 +43,15 @@ class ProfileController extends Controller
             'DOB'            => 'required|date',
             'gender'         => 'required|string',
             
-            // Allow student to edit their class info? (Usually restricted, but enabling for assignment CRUD)
+            
             'form'           => 'required|integer|min:1|max:6',
             'class_name'     => 'required|string',
 
-            // Optional Password Validation
+            
             'password' => 'nullable|min:8|confirmed',
         ]);
 
-        // 2. Update User Table
+        
         $user->name = $request->name;
         $user->email = $request->email;
         
@@ -60,7 +60,7 @@ class ProfileController extends Controller
         }
         $user->save();
 
-        // 3. Update Student Table
+        
         $student->student_ic = $request->nric;
         $student->student_phone_number = $request->phone_number;
         $student->student_address = $request->address;
@@ -68,7 +68,7 @@ class ProfileController extends Controller
         $student->student_DOB = $request->DOB;
         $student->student_gender = $request->gender;
         
-        // Update Academic Info
+        
         $student->student_form = $request->form;
         $student->student_class = $request->class_name; 
         

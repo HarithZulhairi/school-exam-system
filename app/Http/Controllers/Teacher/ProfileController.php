@@ -18,7 +18,7 @@ class ProfileController extends Controller
         $user = Auth::user();
         $teacher = $user->teacher;
 
-        // Convert comma-separated subjects string back to array for the view
+        
         $currentSubjects = $teacher->teacher_subjects ? explode(', ', $teacher->teacher_subjects) : [];
 
         return view('teacher.teacherProfile', compact('user', 'teacher', 'currentSubjects'));
@@ -32,13 +32,13 @@ class ProfileController extends Controller
         $user = Auth::user();
         $teacher = $user->teacher;
 
-        // 1. Validate Data
+        
         $request->validate([
-            // User Table Validation
+            
             'name'  => 'required|string|max:255',
             'email' => ['required', 'email', Rule::unique('users')->ignore($user->id)],
             
-            // Teacher Table Validation
+            
             'nric'           => ['required', Rule::unique('teachers', 'teacher_ic')->ignore($teacher->teacher_id, 'teacher_id')],
             'phone_number'   => 'required|string|max:20',
             'address'        => 'required|string',
@@ -49,23 +49,21 @@ class ProfileController extends Controller
             'DOB'            => 'required|date',
             'gender'         => 'required|string',
 
-            // --- NEW: Class Form Restriction ---
-            // "form_class" must be unique in "teachers" table (column: teacher_form_class)
-            // We ignore the current teacher's ID so they can keep their own class without error.
+            
             'form_class'     => [
                 'required', 
                 'string', 
                 Rule::unique('teachers', 'teacher_form_class')->ignore($teacher->teacher_id, 'teacher_id')
             ],
 
-            // Optional Password Validation
+            
             'password' => 'nullable|min:8|confirmed',
         ], [
-            // Custom Error Message
+            
             'form_class.unique' => 'This Class Form is already assigned to another teacher.',
         ]);
 
-        // 2. Update User Table
+        
         $user->name = $request->name;
         $user->email = $request->email;
         
@@ -74,20 +72,20 @@ class ProfileController extends Controller
         }
         $user->save();
 
-        // 3. Update Teacher Table
+        
         $teacher->teacher_ic = $request->nric;
         $teacher->teacher_address = $request->address;
-        $teacher->teacher_phone_number = $request->phone_number; // Ensure this column matches your DB
+        $teacher->teacher_phone_number = $request->phone_number; 
         $teacher->teacher_qualifications = $request->qualifications;
         $teacher->teacher_status = $request->status;
         $teacher->teacher_age = $request->age;
         $teacher->teacher_DOB = $request->DOB;
         $teacher->teacher_gender = $request->gender;
         
-        // Save the Class Form
+        
         $teacher->teacher_form_class = $request->form_class;
         
-        // Convert Array of Subjects to Comma Separated String
+        
         $teacher->teacher_subjects = implode(', ', $request->subjects);
         
         $teacher->save();

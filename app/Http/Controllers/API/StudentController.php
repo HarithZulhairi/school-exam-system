@@ -14,41 +14,28 @@ class StudentController extends Controller
 {
     /**
      * GET /api/students
-     * List all students
      */
     public function index()
     {
         $students = Student::with('user')->get();
-        
-        return response()->json([
-            'success' => true,
-            'count' => $students->count(),
-            'data' => $students
-        ], 200);
+        return $students;
     }
 
     /**
      * GET /api/students/{id}
-     * Show one student
      */
     public function show($id)
     {
         $student = Student::with('user')->find($id);
-
-        if (!$student) {
-            return response()->json(['success' => false, 'message' => 'Student not found'], 404);
-        }
-
-        return response()->json(['success' => true, 'data' => $student], 200);
+        return $student;
     }
 
     /**
      * POST /api/students
-     * Register a new student
      */
     public function store(Request $request)
     {
-        // 1. Validate
+        
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
@@ -62,7 +49,7 @@ class StudentController extends Controller
             'student_address' => 'required|string',
         ]);
 
-        // 2. Create User
+        
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
@@ -70,7 +57,7 @@ class StudentController extends Controller
             'role' => 'student',
         ]);
 
-        // 3. Create Student Profile
+        
         $age = Carbon::parse($validated['student_dob'])->age;
 
         $student = Student::create([
@@ -94,7 +81,6 @@ class StudentController extends Controller
 
     /**
      * PUT /api/students/{id}
-     * Update a student
      */
     public function update(Request $request, $id)
     {
@@ -106,7 +92,6 @@ class StudentController extends Controller
 
         $user = $student->user;
 
-        // 1. Validate
         $request->validate([
             'name' => 'sometimes|string|max:255',
             'email' => ['sometimes', 'email', Rule::unique('users')->ignore($user->id)],
@@ -118,13 +103,11 @@ class StudentController extends Controller
             'student_address' => 'sometimes|string',
         ]);
 
-        // 2. Update User Info
         if ($request->has('name')) $user->name = $request->name;
         if ($request->has('email')) $user->email = $request->email;
         if ($request->has('password')) $user->password = Hash::make($request->password);
         $user->save();
 
-        // 3. Update Student Profile
         if ($request->has('student_dob')) {
             $student->student_age = Carbon::parse($request->student_dob)->age;
         }
@@ -138,6 +121,28 @@ class StudentController extends Controller
             'success' => true,
             'message' => 'Student updated successfully',
             'data' => $student->load('user')
+        ], 200);
+    }
+
+    public function destroy($id)
+    {
+        $student = Student::find($id);
+
+        if (!$student) {
+            return response()->json(['success' => false, 'message' => 'Student not found'], 404);
+        }
+
+        $user = User::find($student->user_id);
+
+        if ($user) {
+            $user->delete();
+        } else {
+            $student->delete();
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Student deleted successfully'
         ], 200);
     }
 }

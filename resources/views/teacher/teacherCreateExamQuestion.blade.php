@@ -169,7 +169,7 @@
                                 </div>
                             </div>
                             <div class="text-end">
-                                <a href="{{ route('teacher.teacherDashboard') }}" class="btn btn-light text-primary fw-bold btn-sm">Done / Finish</a>
+                                <a href="{{ route('teacher.exams.index') }}" class="btn btn-light text-primary fw-bold btn-sm">Done / Finish</a>
                             </div>
                         </div>
                         @if($exam->exam_description)

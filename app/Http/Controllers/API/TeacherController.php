@@ -18,13 +18,18 @@ class TeacherController extends Controller
     public function index()
     {
         $teachers = Teacher::with('user')->get();
-        
-        return response()->json([
-            'success' => true,
-            'count' => $teachers->count(),
-            'data' => $teachers
-        ], 200);
+        return $teachers;
     }
+
+    /**
+     * GET /api/teachers/{id}
+     */
+    public function show($id)
+    {
+        $teacher = Teacher::with('user')->find($id);
+        return $teacher;
+    }
+
 
     /**
      * POST /api/teachers
@@ -112,5 +117,25 @@ class TeacherController extends Controller
             'message' => 'Teacher updated successfully',
             'data' => $teacher->load('user')
         ], 200);
+    }
+
+    /**
+     * DELETE /api/teachers/{id}
+     */
+    public function destroy($id)
+    {
+        $teacher = Teacher::find($id);
+
+        if (!$teacher) {
+            return response()->json(['success' => false, 'message' => 'Teacher not found'], 404);
+        }
+        
+        $user = User::find($teacher->user_id);
+        if ($user) {
+            $user->delete();
+        } else {
+            $teacher->delete();
+        }
+        return response()->json(['success' => true, 'message' => 'Teacher deleted successfully'], 200);
     }
 }

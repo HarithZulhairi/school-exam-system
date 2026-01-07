@@ -101,19 +101,24 @@
                                 <input type="text" name="student_phone_number" class="form-control" placeholder="e.g. 012-3456789" value="{{ old('student_phone_number') }}">
                             </div>
 
+                            <!-- Dynamic Form Level -->
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small text-muted">Form Level</label>
-                                <select name="student_form" class="form-select" required>
+                                <select name="student_form" id="studentForm" class="form-select" required>
                                     <option value="" disabled selected>Select Form</option>
                                     @for($i = 1; $i <= 6; $i++)
                                         <option value="{{ $i }}" {{ old('student_form') == $i ? 'selected' : '' }}>Form {{ $i }}</option>
                                     @endfor
                                 </select>
                             </div>
+
+                            <!-- Dynamic Class Name -->
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small text-muted">Class Name</label>
-                                <input type="text" name="student_class" class="form-control" placeholder="e.g. 5 Bestari" value="{{ old('student_class') }}" required>
-                                <small class="text-muted fst-italic" style="font-size: 0.75rem;">Format: Form + Name (e.g., 4 Cerdik)</small>
+                                <select name="student_class" id="studentClass" class="form-select" required disabled>
+                                    <option value="" disabled selected>Select Form First</option>
+                                    <!-- Options will be populated by JavaScript -->
+                                </select>
                             </div>
 
                             <div class="col-12">
@@ -134,4 +139,52 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const formSelect = document.getElementById('studentForm');
+        const classSelect = document.getElementById('studentClass');
+        
+        
+        const classNames = ['Bestari', 'Cerdik', 'Amanah'];
+        
+        
+        const oldClass = "{{ old('student_class') }}";
+
+        function updateClasses() {
+            const selectedForm = formSelect.value;
+            
+            
+            classSelect.innerHTML = '<option value="" disabled selected>Select Class</option>';
+            
+            if (selectedForm) {
+                classSelect.disabled = false;
+                
+                
+                classNames.forEach(name => {
+                    const fullClassName = `${selectedForm} ${name}`;
+                    const option = document.createElement('option');
+                    option.value = fullClassName;
+                    option.textContent = fullClassName;
+                    
+                    
+                    if (oldClass === fullClassName) {
+                        option.selected = true;
+                    }
+                    
+                    classSelect.appendChild(option);
+                });
+            } else {
+                classSelect.disabled = true;
+                classSelect.innerHTML = '<option value="" disabled selected>Select Form First</option>';
+            }
+        }
+
+        formSelect.addEventListener('change', updateClasses);
+
+        if (formSelect.value) {
+            updateClasses();
+        }
+    });
+</script>
 @endsection
