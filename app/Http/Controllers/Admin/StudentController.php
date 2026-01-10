@@ -11,14 +11,11 @@ use Carbon\Carbon;
 
 class StudentController extends Controller
 {
-    /**
-     * Display a listing of the students.
-     */
+
     public function index(Request $request)
     {
         $query = Student::with('user');
 
-        // 1. Search Logic
         if ($request->filled('search')) {
             $searchTerm = $request->search;
             $query->where(function($q) use ($searchTerm) {
@@ -28,12 +25,10 @@ class StudentController extends Controller
             });
         }
 
-        // 2. Filter by Form Level
         if ($request->filled('form') && $request->form !== 'all') {
             $query->where('student_form', $request->form);
         }
 
-        // 3. Filter by Class Name
         if ($request->filled('class_name') && $request->class_name !== 'all') {
             $query->where('student_class', $request->class_name);
         }
@@ -135,15 +130,12 @@ class StudentController extends Controller
         $student = Student::findOrFail($id);
         $user = User::findOrFail($student->user_id);
 
-        // 1. Validate Input
         $request->validate([
-            // User Account
+
             'name' => 'required|string|max:255',
-            
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id . ',id',
             'password' => 'nullable|string|min:6', 
             
-            // Student Profile
             'student_ic' => 'required|string|unique:students,student_ic,' . $id . ',student_id',
             'student_gender' => 'required|in:Male,Female',
             'student_dob' => 'required|date',
@@ -153,23 +145,18 @@ class StudentController extends Controller
             'student_address' => 'required|string',
         ]); 
 
-        // 3. Update User Account
         $userData = [
             'name' => $request->name,
             'email' => $request->email,
         ];
 
-        // Only update password if provided
         if ($request->filled('password')) {
             $userData['password'] = Hash::make($request->password);
         }
 
         $user->update($userData);
-
-        // 4. Calculate Age based on DOB
         $age = Carbon::parse($request->student_dob)->age;
 
-        // 5. Update Student Profile
         $student->update([
             'student_ic' => $request->student_ic,
             'student_gender' => $request->student_gender,

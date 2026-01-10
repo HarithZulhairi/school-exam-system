@@ -54,12 +54,12 @@
                         </div>
                     @endif
 
-                    <!-- Update Form -->
+                    
                     <form action="{{ route('admin.students.update', $student->student_id) }}" method="POST">
                         @csrf
-                        @method('PUT') <!-- Crucial for Update Requests -->
+                        @method('PUT')
 
-                        <!-- Section 1: Account Login -->
+                        
                         <h6 class="text-uppercase text-muted fw-bold small mb-3">Account Information</h6>
                         <div class="row g-3 mb-4">
                             <div class="col-md-12">
